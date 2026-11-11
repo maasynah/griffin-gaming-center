@@ -172,13 +172,91 @@ footer{padding:30px 0;border-top:1px solid #38204d;background:#0d0914;color:var(
 <footer><div class="wrap footer-row"><span>© <span id="year"></span> Griffin Gaming Center. All rights reserved.</span><span>PLAY. COMPETE. WIN. · Built for gamers.</span></div></footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
- <div class="modal-box"><button class="close" id="closeModal" aria-label="Close">×</button><h2 id="modalTitle">Join Griffin Gaming Center</h2><p class="muted" id="modalDescription">Enter your details to prepare your request.</p>
- <form id="requestForm"><input id="requestName" required placeholder="Your name"><input id="requestEmail" type="email" required placeholder="Email address"><input id="requestGame" placeholder="Game / platform (optional)"><input id="requestType" type="hidden"><button type="submit">Prepare request</button><p class="notice">This is a front-end demo. Requests are not stored or sent to a server.</p></form>
+ <div class="modal-box"><button class="close" id="closeModal" aria-label="Close">×</button><h2 id="modalTitle">Join Griffin Gaming Center</h2><p class="muted" id="modalDescription">Enter your details to prepare your request.</p><button type="button" id="googleSignInBtn">
+  Continue with Google
+</button>
+<p id="authStatus" class="notice"></p>
+<div class="google-login">
+  <h3>Join Griffin Gaming Center</h3>
+  <p>Register or log in using your Google account.</p>
+
+  <button id="googleSignInBtn" type="button">
+    Continue with Google
+  </button>
+
+  <p id="authStatus"></p>
+  <button id="logoutBtn" type="button" hidden>
+    Sign out
+  </button>
+</div><input id="requestName" required placeholder="Your name"><input id="requestEmail" type="email" required placeholder="Email address"><input id="requestGame" placeholder="Game / platform (optional)"><input id="requestType" type="hidden"><button type="submit">Prepare request</button><p class="notice">This is a front-end demo. Requests are not stored or sent to a server.</p></form>
  </div>
 </div>
 <div id="toast" role="status"></div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAWLnJ6EXzthO0b7g54uu4zjRffkwrTtTE",
+  authDomain: "griffin-gaming-center.firebaseapp.com",
+  projectId: "griffin-gaming-center",
+  storageBucket: "griffin-gaming-center.firebasestorage.app",
+  messagingSenderId: "787420047207",
+  appId: "1:787420047207:web:b9a254729e2b8c28b271c2",
+  measurementId: "G-QBN67K7LRJ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const googleButton = document.getElementById("googleSignInBtn");
+const status = document.getElementById("authStatus");
+const logoutButton = document.getElementById("logoutBtn");
+
+googleButton.addEventListener("click", async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    status.textContent = "Welcome, " + result.user.displayName + "!";
+  } catch (error) {
+    status.textContent = error.message;
+  }
+});
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    status.textContent = "Welcome, " + user.displayName;
+    googleButton.hidden = true;
+    logoutButton.hidden = false;
+  } else {
+    googleButton.hidden = false;
+    logoutButton.hidden = true;
+  }
+});
+
+logoutButton.addEventListener("click", async () => {
+  await signOut(auth);
+  status.textContent = "You have signed out.";
+});
+  
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 const $ = s => document.querySelector(s);
 const toast = message => {
  const el=$("#toast"); el.textContent=message; el.classList.add("show");
