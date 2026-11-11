@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Griffin Gaming Center Admin Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0812;color:#f8f5ff;font:16px Arial}
+header{padding:20px;background:#130d20;border-bottom:1px solid #67349a;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+a,button{background:#922ee8;color:white;padding:11px 16px;border:0;border-radius:8px;text-decoration:none;cursor:pointer}
+main{width:min(1000px,92%);margin:28px auto}.warn{padding:14px;background:#422006;border:1px solid #a16207;border-radius:10px;color:#fde68a;line-height:1.5}
+h1{margin-bottom:5px}h2{color:#c084fc}.muted{color:#b9afc9}.stats,.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
+.cols{grid-template-columns:1fr 1fr}.card{background:#191326;border:1px solid #51247b;border-radius:12px;padding:20px}
+.big{font-size:25px;color:#d8b4fe;font-weight:bold;margin-top:8px}form{display:grid;gap:12px}label{display:grid;gap:6px;color:#d9c8e8;font-size:14px}
+input,select{padding:12px;background:#0e0a16;color:white;border:1px solid #68408b;border-radius:8px;font:inherit}
+.item{padding:10px;margin-top:9px;background:#28183a;border-radius:8px}.item small{display:block;color:#c5b6d5;margin-top:4px}
+li{margin:9px 0;color:#c5b6d5}footer{text-align:center;padding:25px;color:#aaa}
+@media(max-width:650px){.stats,.cols{grid-template-columns:1fr}}
+</style></head><body>
+<header><strong>♛ GRIFFIN GAMING CENTER</strong><a href="index.html">View public website</a></header>
+<main>
+<div class="warn"><b>Prototype notice:</b> This page is not password-protected and does not save information to a server. Do not enter real customer data or use it as a private admin system. Secure authentication and a backend are required before real business use.</div>
+<h1>Admin dashboard</h1><p class="muted">Starter tools for planning products and tournaments.</p>
+<div class="stats">
+<div class="card">Demo products<div class="big" id="pc">0</div></div>
+<div class="card">Demo tournaments<div class="big" id="ec">0</div></div>
+<div class="card">Orders received<div class="big">Not connected</div></div></div>
+<div class="cols">
+<section class="card"><h2>Add a product</h2><form id="pf">
+<label>Product name<input id="pn" required placeholder="Gaming headset"></label>
+<label>Price (KES)<input id="pp" type="number" min="0" required placeholder="2500"></label>
+<label>Category<select id="pt"><option>Gaming accessories</option><option>Digital games</option><option>Football gaming</option></select></label>
+<button>Add demo product</button></form><div id="products"></div></section>
+<section class="card"><h2>Add a tournament</h2><form id="ef">
+<label>Tournament name<input id="en" required placeholder="Griffin eFootball Cup"></label>
+<label>Game<select id="eg"><option>eFootball</option><option>EA SPORTS FC</option><option>Other</option></select></label>
+<label>Event date<input id="ed" type="date"></label><button>Add demo tournament</button></form><div id="events"></div></section></div>
+<section class="card"><h2>Before real launch</h2><ul>
+<li>Secure administrator login and permissions.</li><li>Database for products, events, registrations and orders.</li>
+<li>Server-side validation and secure payment-provider integration.</li><li>Customer privacy, refund and tournament rules.</li></ul></section>
+</main><footer>Griffin Gaming Center · Admin prototype</footer>
+<script>
+let pc=0,ec=0;
+pf.onsubmit=e=>{e.preventDefault();pc++;document.getElementById('pc').textContent=pc;let d=document.createElement('div');d.className='item';let s=document.createElement('small');s.textContent=pt.value+' · KES '+Number(pp.value).toLocaleString();d.textContent=pn.value;d.append(s);products.append(d);pf.reset()};
+ef.onsubmit=e=>{e.preventDefault();ec++;document.getElementById('ec').textContent=ec;let d=document.createElement('div');d.className='item';let s=document.createElement('small');s.textContent=eg.value+(ed.value?' · '+ed.value:' · Date TBA');d.textContent=en.value;d.append(s);events.append(d);ef.reset()};
+</script></body></html>
